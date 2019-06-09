@@ -2,7 +2,7 @@ stages:
 - name: compile
   steps:
   - runScriptConfig:
-      image: daflockinger/ng-cli-rancher-pipeline:0.0.1
+      image: daflockinger/ng-cli-rancher-pipeline:0.0.2
       shellScript: ng build --prod
 - name: build container
   steps:
