@@ -3,7 +3,9 @@ stages:
   steps:
   - runScriptConfig:
       image: daflockinger/ng-cli-rancher-pipeline:0.0.3
-      shellScript: ng build --prod
+      shellScript: |-
+        npm install
+        ng build --prod
 - name: build container
   steps:
   - publishImageConfig:
