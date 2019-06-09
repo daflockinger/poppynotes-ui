@@ -1,0 +1,14 @@
+stages:
+- name: compile
+  steps:
+  - runScriptConfig:
+      image: trion/ng-cli:8.0.1
+      shellScript: ng build --prod
+- name: build container
+  steps:
+  - publishImageConfig:
+      dockerfilePath: ./Dockerfile
+      buildContext: .
+      tag: daflockinger/poppynotes-frontend:${CICD_EXECUTION_SEQUENCE}
+      registry: 127.0.0.1:34685
+timeout: 60
