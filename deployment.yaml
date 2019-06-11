@@ -8,8 +8,8 @@ spec:
   type: NodePort
   ports:
     - protocol: TCP
-      port: 4200
-      targetPort: 8081
+      port: 80
+      targetPort: 0
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -33,4 +33,4 @@ spec:
       - name: maven
         image: ${CICD_IMAGE}:${CICD_EXECUTION_SEQUENCE}
         ports:
-        - containerPort: 8081
+        - containerPort: 80
