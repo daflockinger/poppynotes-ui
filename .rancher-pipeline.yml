@@ -13,5 +13,8 @@ stages:
       buildContext: .
       tag: daflockinger/poppynotes-frontend:${CICD_EXECUTION_SEQUENCE}
       registry: 127.0.0.1:34685
+- name: deploy
+  steps:
+  - applyYamlConfig:
+      path: ./deployment.yaml
 timeout: 60
-
