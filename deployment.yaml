@@ -1,0 +1,36 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: poppynotes-ui
+spec:
+  selector:
+    app: poppynotes-ui
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 4200
+      targetPort: 8081
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: daflockinger/poppynotes-ui
+  labels:
+    app: poppynotes-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: poppynotes-ui
+  template:
+    metadata:
+      labels:
+        app: poppynotes-ui
+    spec:
+      imagePullSecrets:
+      - name: pipeline-docker-registry
+      containers:
+      - name: maven
+        image: ${CICD_IMAGE}:${CICD_EXECUTION_SEQUENCE}
+        ports:
+        - containerPort: 8081
