@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://api-notes.flockinger.com'
+  apiUrl: 'https://api-notes.flockinger.com'
 };
