@@ -67,6 +67,7 @@ export class UserSecretComponent implements OnInit {
     this.keyEditModeDisabled = false;
     this.secretForm.controls.user.get('userKey').enable();
   }
+
   disableEditKeyMode() {
     this.keyEditModeDisabled = true;
     this.secretForm.controls.user.get('userKey').disable();
