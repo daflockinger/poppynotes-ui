@@ -24,9 +24,11 @@ export class UserSecretComponent implements OnInit {
   @Input('isUserAllowed')
   isUserAllowed: boolean;
 
+  isPinEnteredWrong = false;
   keyEditModeDisabled = true;
   userKey = '';
   userHash = '';
+  pin = '';
 
   ngOnInit() {
     this.userKey = this.secretStore.getKey();
@@ -35,7 +37,8 @@ export class UserSecretComponent implements OnInit {
     this.secretForm = this.formBuilder.group({
       user: this.formBuilder.group({
         userKey: ['', Validators.required],
-        userHash: ['']
+        userHash: [''],
+        pin: ['', Validators.required]
       })
     });
     this.disableEditKeyMode();
@@ -47,7 +50,8 @@ export class UserSecretComponent implements OnInit {
   updateUserForm() {
     this.secretForm.controls.user.patchValue({
       userKey: this.userKey,
-      userHash: this.userHash
+      userHash: this.userHash,
+      pin: this.pin
     });
     this.checkIfUserAllowed().subscribe(notes => {
       this.bsModalRef.hide();
@@ -64,8 +68,20 @@ export class UserSecretComponent implements OnInit {
 
 
   enableEditKeyMode() {
-    this.keyEditModeDisabled = false;
-    this.secretForm.controls.user.get('userKey').enable();
+    const pinHash = this.crypto.createHash(this.secretForm.value.user.pin);
+    const storedPinHash = this.secretStore.getPin();
+    
+    if (pinHash === storedPinHash || storedPinHash == null) {
+      this.isPinEnteredWrong = false;
+      this.keyEditModeDisabled = false;
+      this.secretForm.controls.user.get('userKey').enable();
+    } else {
+      this.isPinEnteredWrong = true;
+    }
+  }
+
+  private storePin(pin: string) {
+    this.secretStore.storePin(this.crypto.createHash(pin));
   }
 
   disableEditKeyMode() {
@@ -78,6 +94,7 @@ export class UserSecretComponent implements OnInit {
     this.secretStore.storeKey(this.userKey);
     this.userHash = this.crypto.createHash(this.userKey);
     this.secretStore.storeUserHash(this.userHash);
+    this.storePin(this.secretForm.value.user.pin);
     this.updateUserForm();
   }
 
@@ -87,6 +104,7 @@ export class UserSecretComponent implements OnInit {
     this.secretStore.storeKey(this.userKey);
     this.userHash = this.crypto.createHash(this.userKey);
     this.secretStore.storeUserHash(this.userHash);
+    this.storePin(this.secretForm.value.user.pin);
     this.updateUserForm();
     this.disableEditKeyMode();
   }
