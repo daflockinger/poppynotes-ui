@@ -12,6 +12,7 @@ import { ModalModule } from 'ngx-bootstrap';
 import {Ng2Webstorage, LocalStorage} from 'ngx-webstorage';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { LinkyModule } from 'ngx-linky';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -44,7 +45,8 @@ import { CryptoService } from 'src/app/service/crypto/crypto.service';
     ModalModule.forRoot(),
     Ng2Webstorage,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    LinkyModule
   ],
   providers: [
     {provide: BrowserXhr, useClass: CustomCorsExtension},
